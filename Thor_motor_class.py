@@ -44,13 +44,14 @@ class ThorMotor():
             print("specified motor is absent")
             #raise error
         else:
-            if Linear:
+            if int(SN) == 27261762:
                 scale="Z812"
                 self.units='mm'
                 self.scale=10**3
             else:
-                scale='step'
-                self.units='step'
+                scale='PRM1-Z8'
+                self.units='deg'
+                self.scale = 1
                 
             if SN==None:
                 self.motor=Thorlabs.KinesisMotor(self.motorlist[MotorNumber][0],scale=scale)
@@ -86,9 +87,7 @@ class ThorMotor():
         self.home_position=home#*self.scale
 
     def setSpeed(self, velocity=100):
-        Vmax = 4 * (velocity / 100)
-        Accel = 3 * (velocity / 100)
-        self.set_velocity(0, Vmax, Accel)
+        self.set_velocity(0, velocity, velocity)
         
     def set_velocity(self,Vmin,Vmax,Accel):
         """set velocity parameters
