@@ -1,0 +1,30 @@
+AvaSoft 8.12.0
+
+Release Date (yyyy-mm-dd): 2020-12-01
+
+Changes / New features:
+
+- Live export to Excel now has the same options as live export to ASCII (start delay, interval, number of scans).
+- New FOM (Fiber Optic Multiplexer) now supported.
+- New rackmount with parallel hardware-trigger enabled on all spectrometers now supported.
+- Option to limit the number of channels used on a FOM.
+- Reciprocal x-axis now supported, including option to mirror the x-axis.
+- The folder for converting AvaSoft7 files is now saved.
+- Spectrometer settings: the "Stop Wavelength" value is now limited to the factory stop-pixel.
+- Several AvaSoft8 windows can now be closed by pressing ESC.
+- Setting the integration time to a value larger than supported by the spectrometer will set the value to the maximum value supported now.
+- When a lot of spectrometers should show in the "external trigger options" screen, a scrollbar will now allow the selection of all spectrometers.
+- Improved log file.
+
+
+Bug fixes:
+
+- Creating incorrect timeseries could crash AvaSoft8.
+- Save/export loaded data (without measurement being active) is possible again.
+- Small bug in converting AvaSoft7 irradiance files.
+- Access violation when export to ASCII is done with find peak option enabled.
+- Starting a second timeseries makes the first one stop.
+- Disconnecting a spectrometer that previously was used in live data output could lead to unwanted behaviour in AvaSoft8.
+- Integral function did not function for merged spectra.
+- Custom reflectance bug when using a start pixel larger than 0.
+- Correct minimum integration time for S11639/S13494 detectors.
