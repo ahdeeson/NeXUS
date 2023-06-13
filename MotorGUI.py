@@ -3,6 +3,7 @@ motor GUI
 
 @author: Slawa
 """
+import time
 
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtCore
@@ -96,7 +97,6 @@ class MotorGUI(QMainWindow):
         try:
             index = self.connectwindow.table.selectedIndexes()[0].row()
             self.motor.connect(index)
-            print(self.motor.config_parameters['SN'])
             self.setWindowTitle(self.motor.config_parameters['userID'] + ' ' + self.motor.Type + ' ' + str(self.motor.SN))
             self.configwindow.setWindowTitle(self.configwindow.windowTitle()+' ' +
                                              self.motor.Type + ' ' + str(self.motor.SN))
@@ -135,7 +135,6 @@ class MotorGUI(QMainWindow):
         CP=self.motor.config_parameters
         self.configwindow.vendor.setPlaceholderText(CP['vendor'])
         self.configwindow.SN.setPlaceholderText(str(CP['SN']))
-        print('yuh yuh')
         self.configwindow.UserID.setText(str(CP['userID']))
         self.configwindow.NexusID.display(CP['NexusID'])
         self.configwindow.Pmin.setValue(CP['limit min'])
@@ -205,7 +204,9 @@ class MotorGUI(QMainWindow):
         try:
             dx=self.StepSize.value()
             un=self.unitsControl.currentText()
+
             self.motor.moveR(dx,units=un)
+
         except ER.SL_exception as error:
             self.showerror(error)
         

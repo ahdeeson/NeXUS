@@ -46,6 +46,7 @@ class MCS2():
     def __init__(self, holdtime=1000, driver=ctl):
         """holdtime time to hold position after movement in ms"""
         self.Type = 'MCS2'
+        self.stepsize = 570
         self.home_position = 0
         self.homed = False
         self.motorlist = []
@@ -69,6 +70,7 @@ class MCS2():
         self.d_handle = self.driver.Open(locators[0])
 
         self.search()
+
 
     def search(self):
 
@@ -154,9 +156,9 @@ class MCS2():
         if not self.encoded:
             self.driver.SetProperty_i32(self.d_handle, self.channelIndex, self.driver.Property.MOVE_MODE,
                                         self.driver.MoveMode.STEP)
-
-            Dx = dx * -570
+            Dx = dx * -self.stepsize
             self.pos = self.pos - Dx
+
         else:
             self.driver.SetProperty_i32(self.d_handle, self.channelIndex, self.driver.Property.MOVE_MODE,
                                         self.driver.MoveMode.CL_RELATIVE)
@@ -170,7 +172,7 @@ class MCS2():
         """move absolute
         to x in mm"""
         if not self.encoded:
-            dx = (x * 570) - self.pos
+            dx = (x * self.stepsize) - self.pos
             self.driver.Move(self.d_handle, self.channelIndex, int(-dx))
             self.pos = self.pos + dx
         else:
@@ -228,7 +230,7 @@ class MCS2():
             pos = self.driver.GetProperty_i64(self.d_handle, self.channelIndex,
                                               self.driver.Property.POSITION) / 1000000000
         else:
-            pos = self.pos / 570
+            pos = self.pos / self.stepsize
 
         return pos
 

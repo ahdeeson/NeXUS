@@ -288,7 +288,7 @@
      <item>
       <widget class="QDoubleSpinBox" name="velocity">
        <property name="maximum">
-        <double>1000000.000000000000000</double>
+        <double>100.000000000000000</double>
        </property>
       </widget>
      </item>

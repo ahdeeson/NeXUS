@@ -1,3 +1,9 @@
+"""
+control class for PI mercury controller
+
+@author Addison
+"""
+
 import os
 import sys
 Path=os.path.dirname((os.path.abspath(__file__)))

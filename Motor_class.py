@@ -23,6 +23,7 @@ from Thor_motor_class import ThorMotor
 # from Motor_emulator import Motor_emulator
 from SmarActMCS2 import MCS2
 from C663 import C663
+from ESP302 import ESP302
 
 # try:
 #     from SmarActSCU import *
@@ -65,7 +66,6 @@ class Motor():
             #if not loaded yet
             try:
                 data=pd.read_json('motor_config.json')
-                print(data)
                 self.config=data.to_dict('index')
                 self.configLoaded=True
                 
@@ -148,6 +148,16 @@ class Motor():
             self.SAM_MCS2 = None
 
         try:
+            esp302 = ESP302()
+            self.esp302 = esp302
+
+            self.motorlist += [['ESP302', m] for m in esp302.motorlist]
+        except Exception as error:
+            print('ESP302 doenst work')
+            print(error)
+            self.esp302 = None
+
+        try:
             c663 = C663()
             self.c663 = c663
             self.motorlist += [['C663', m] for m in c663.motorlist]
@@ -199,6 +209,13 @@ class Motor():
                 self.motor.connect(SN=M[1])
                 self.encodered = self.SAM_MCS2.encoded
                 self.SN=M[1]
+                self.motor.SN = self.SN
+            elif M[0] == 'ESP302':
+                self.Type = M[0]
+                self.motor = self.esp302
+                self.motor.connect(SN=M[1])
+                self.encodered = self.esp302.encoded
+                self.SN = M[1]
                 self.motor.SN = self.SN
             elif M[0] == 'C663':
                 self.Type = M[0]
@@ -269,7 +286,7 @@ class Motor():
     def moveA(self,X,units='mm'):
         """move to position X"""
         if units != self.motor.units:
-            if self.Type in ['Thorlabs', 'Zaber', 'SmarAct_SCU', 'MCS2', 'C663']:
+            if self.Type in ['Thorlabs', 'Zaber', 'SmarAct_SCU', 'MCS2', 'C663', 'ESP302']:
                 if units == 'fs':
                     X=X*10**-15*c*1000 #convert fs to mm
                     self.motor.moveA(X, WaitToMove=False)
